@@ -5,7 +5,6 @@ import arekn.holiday.api.service.HolidayApiService;
 import arekn.holiday.api.service.response.Holiday;
 import arekn.holiday.controller.response.CommonHolidays;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -20,12 +19,12 @@ public class HolidayService {
 
     private final HolidayApiService holidayApi;
 
-    @Value("${holiday.service.searchRangeInMonths}")
-    private Integer maxSearchRange;
+    private final HolidayServiceSettings serviceSettings;
 
     @Autowired
-    public HolidayService(HolidayApiService holidayApi) {
+    public HolidayService(HolidayApiService holidayApi, HolidayServiceSettings serviceSettings) {
         this.holidayApi = holidayApi;
+        this.serviceSettings = serviceSettings;
     }
 
     public CommonHolidays findCommonHolidays(HolidayContext context) {
@@ -39,7 +38,7 @@ public class HolidayService {
             } else {
                 dateDelayInMonths++;
             }
-        } while (dateDelayInMonths < maxSearchRange);
+        } while (dateDelayInMonths < serviceSettings.getMaxSearchRange());
         throw new HolidayNotFoundException("Common holiday not found");
     }
 

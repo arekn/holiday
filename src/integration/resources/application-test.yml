@@ -1,0 +1,6 @@
+holiday:
+  api:
+    endpoint: "https://holidayapi.com/v1/holidays"
+    key: "8111790a-1690-4a08-afe5-bde7ead97c65"
+  service:
+    searchRangeInMonths: 60

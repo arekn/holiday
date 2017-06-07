@@ -30,6 +30,11 @@ class HolidayApiGateway {
         this.restTemplate = new RestTemplate();
     }
 
+    public HolidayApiGateway(RestTemplate restTemplate, HolidayApiSettings apiSettings) {
+        this.restTemplate = restTemplate;
+        this.apiSettings = apiSettings;
+    }
+
     public HolidayApiResponse getApiHolidays(HolidayApiRequest request) {
         try {
             UriComponentsBuilder ucb = buildBaseURI(request);
