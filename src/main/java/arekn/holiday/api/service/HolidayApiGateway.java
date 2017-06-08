@@ -39,6 +39,7 @@ class HolidayApiGateway {
         try {
             UriComponentsBuilder ucb = buildBaseURI(request);
             URI uri = ucb.build().encode().toUri();
+            log.info("Getting response from Holiday API");
             HolidayApiResponse response = restTemplate.getForObject(uri, HolidayApiResponse.class);
             filter(request, response);
             return response;

@@ -32,9 +32,9 @@ public class HolidayService {
         do {
             LocalDate searchPeriod = context.getLaterDate(dateDelayInMonths);
             List<List<Holiday>> apiHolidays = holidayApi.getApiHolidays(context, searchPeriod);
-            List<Holiday> foundCommonHolidays = findCommonElements(apiHolidays);
-            if (!foundCommonHolidays.isEmpty()) {
-                return common(foundCommonHolidays, apiHolidays);
+            List<Holiday> commonHolidays = retainCommonHolidays(apiHolidays);
+            if (!commonHolidays.isEmpty()) {
+                return buildResponse(commonHolidays, apiHolidays);
             } else {
                 dateDelayInMonths++;
             }
@@ -42,7 +42,16 @@ public class HolidayService {
         throw new HolidayNotFoundException("Common holiday not found");
     }
 
-    private CommonHolidays common(List<Holiday> commonHolidays, List<List<Holiday>> apiHolidays) {
+    private List<Holiday> retainCommonHolidays(List<List<Holiday>> allHolidays) {
+        List<Holiday> retain = allHolidays.get(firstElementIndex);
+        for (int index = 1; index < allHolidays.size(); index++) {
+            List<Holiday> holidayList = allHolidays.get(index);
+            retain.retainAll(holidayList);
+        }
+        return retain;
+    }
+
+    private CommonHolidays buildResponse(List<Holiday> commonHolidays, List<List<Holiday>> apiHolidays) {
         Holiday earliestCommonHoliday = getEarliestHoliday(commonHolidays);
         List<String> holidayNames = new ArrayList<>();
         for (List<Holiday> dd : apiHolidays) {
@@ -54,14 +63,5 @@ public class HolidayService {
     private Holiday getEarliestHoliday(List<Holiday> holidays) {
         Collections.sort(holidays);
         return holidays.get(firstElementIndex);
-    }
-
-    private List<Holiday> findCommonElements(List<List<Holiday>> allHolidays) {
-        List<Holiday> retain = allHolidays.get(firstElementIndex);
-        for (int index = 1; index < allHolidays.size(); index++) {
-            List<Holiday> holidayList = allHolidays.get(index);
-            retain.retainAll(holidayList);
-        }
-        return retain;
     }
 }
