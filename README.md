@@ -14,7 +14,9 @@ holiday:
     searchRangeInMonths: 60
 ```
 **holiday.api.endpoint** - Holiday API service endpoint. External service providing holiday information.
+
 **holiday.api.key** - API Key provided from [Holiday API](https://holidayapi.com/). Default key is test key returning dummy holiday data. 
+
 **holiday.service.searchRangeInMonths** - Service is checking for common holidays on a monthly basis. Default value is 60 months meaning that service is searching in 5 years+ from request date.
 
 ### Command line arguments
